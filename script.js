@@ -1,0 +1,184 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // ヘッダーのスクロール効果
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // スライドショー
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function showSlide(n) {
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        slides[n].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // 最初のスライドを表示
+    if (slides.length > 0) {
+        showSlide(0);
+        // 5秒ごとにスライドを切り替え
+        setInterval(nextSlide, 5000);
+    }
+
+    // スムーススクロール
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // モバイルメニュー
+    const createMobileMenu = () => {
+        const nav = document.querySelector('nav');
+        const mobileMenuBtn = document.createElement('div');
+        mobileMenuBtn.className = 'mobile-menu-btn';
+        mobileMenuBtn.innerHTML = '<span></span><span></span><span></span>';
+        
+        header.querySelector('.container').appendChild(mobileMenuBtn);
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+        
+        // メニュー項目をクリックしたらメニューを閉じる
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenuBtn.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+    };
+
+    // 画面幅が768px以下の場合にモバイルメニューを作成
+    if (window.innerWidth <= 768) {
+        createMobileMenu();
+    }
+
+    // リサイズ時の処理
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768 && !document.querySelector('.mobile-menu-btn')) {
+            createMobileMenu();
+        }
+    });
+
+    // アニメーション効果
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.service-item, .case-item, .about-item, .timeline-item');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (elementPosition < windowHeight - 100) {
+                element.classList.add('animate');
+            }
+        });
+    };
+
+    // スクロール時にアニメーション効果を適用
+    window.addEventListener('scroll', animateOnScroll);
+    // 初期表示時にもアニメーション効果を確認
+    animateOnScroll();
+
+    // CSSに追加するアニメーションスタイル
+    const style = document.createElement('style');
+    style.textContent = `
+        .service-item, .case-item, .about-item, .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .service-item.animate, .case-item.animate, .about-item.animate, .timeline-item.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mobile-menu-btn {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+                cursor: pointer;
+                width: 30px;
+                height: 20px;
+                position: relative;
+                z-index: 1001;
+            }
+            .mobile-menu-btn span {
+                display: block;
+                width: 100%;
+                height: 2px;
+                background-color: var(--primary-color);
+                position: absolute;
+                transition: all 0.3s ease;
+            }
+            .mobile-menu-btn span:nth-child(1) {
+                top: 0;
+            }
+            .mobile-menu-btn span:nth-child(2) {
+                top: 9px;
+            }
+            .mobile-menu-btn span:nth-child(3) {
+                top: 18px;
+            }
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: rotate(45deg);
+                top: 9px;
+            }
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: rotate(-45deg);
+                top: 9px;
+            }
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--white);
+                box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+                transition: right 0.3s ease;
+                z-index: 1000;
+                padding-top: 80px;
+            }
+            nav.active {
+                right: 0;
+            }
+            nav ul {
+                flex-direction: column;
+                padding: 0 2rem;
+            }
+            nav ul li {
+                margin: 1rem 0;
+            }
+            header.scrolled {
+                padding: 0.5rem 0;
+                background-color: rgba(255, 255, 255, 0.95);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}); 
