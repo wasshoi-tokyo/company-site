@@ -181,4 +181,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+
+    // ニュースデータを取得して表示する関数
+    async function fetchAndDisplayNews() {
+        try {
+            const response = await fetch('https://docs.google.com/spreadsheets/d/1isWXV45Bd13i6yjZPhZNu8LAZi0_Y04pFp2Js0CVFjA/gviz/tq?tqx=out:csv');
+            const csvText = await response.text();
+            console.log('取得したCSVデータ:', csvText);
+            
+            const rows = csvText.trim().split('\n');
+            const columns = rows[1].split(',');
+            const newsContainer = document.querySelector('.news-list');
+            newsContainer.innerHTML = `<div class="news-item"><div class="news-content"><h3>${columns[1]}</h3></div></div>`;
+        } catch (error) {
+            console.error('CSVデータの取得に失敗しました:', error);
+        }
+    }
+
+    // ページ読み込み時にニュースを取得
+    fetchAndDisplayNews();
 }); 

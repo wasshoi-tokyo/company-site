@@ -1,0 +1,3 @@
+git add .
+git commit -m "ニュース更新手順更新"
+git push
