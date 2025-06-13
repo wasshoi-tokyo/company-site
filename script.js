@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // CSVを解析してデータを配列に格納
             const rows = csvText.trim().split('\n').slice(1); // ヘッダー行を除外
             const newsData = rows.map(row => {
-                const [date, content, url] = row.split(',');
+                const [date, content, url] = row.split(',').map(cell => cell.replace(/^"|"$/g, ''));
                 return { date, content, url };
             });
 
