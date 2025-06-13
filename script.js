@@ -189,10 +189,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const csvText = await response.text();
             console.log('取得したCSVデータ:', csvText);
             
-            const rows = csvText.trim().split('\n');
-            const columns = rows[1].split(',');
+            // CSVを解析してデータを配列に格納
+            const rows = csvText.trim().split('\n').slice(1); // ヘッダー行を除外
+            const newsData = rows.map(row => {
+                const [date, content, url] = row.split(',');
+                return { date, content, url };
+            });
+
+            // 日付でソート（降順）
+            newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // ニュースを表示
             const newsContainer = document.querySelector('.news-list');
-            newsContainer.innerHTML = `<div class="news-item"><div class="news-content"><h3>${columns[1]}</h3></div></div>`;
+            newsContainer.innerHTML = newsData.map(item => `
+                <div class="news-item">
+                    <div class="news-date">${item.date}</div>
+                    <div class="news-content">
+                        <h3>${item.content}</h3>
+                        ${item.url ? `<a href="${item.url}" target="_blank">${item.url}</a>` : ''}
+                    </div>
+                </div>
+            `).join('');
         } catch (error) {
             console.error('CSVデータの取得に失敗しました:', error);
         }
