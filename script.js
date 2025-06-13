@@ -196,12 +196,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 return { date, content, url };
             });
 
-            // 日付でソート（降順）
+            // 日付でソート（降順）して最新5件を取得
             newsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const latestNews = newsData.slice(0, 5);
 
             // ニュースを表示
             const newsContainer = document.querySelector('.news-list');
-            newsContainer.innerHTML = newsData.map(item => `
+            newsContainer.innerHTML = latestNews.map(item => `
                 <div class="news-item">
                     <div class="news-date">${item.date}</div>
                     <div class="news-content">
