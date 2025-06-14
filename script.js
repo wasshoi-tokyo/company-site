@@ -226,11 +226,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
             const rows = csvText.trim().split('\n');
-            const headers = rows[0].split(',').map(h => h.replace(/^\"|\"$/g, ''));
-            const data = rows.slice(1).map(row => row.split(',').map(cell => cell.replace(/^\"|\"$/g, '')));
+            const headers = rows[0].split(',').map(h => h.replace(/^"|"$/g, ''));
+            const data = rows.slice(1).map(row => row.split(',').map(cell => cell.replace(/^"|"$/g, '')));
+            console.log('パースした事例データ:', data);
             const casesContainer = document.querySelector('.cases-grid');
+            console.log('casesContainer:', casesContainer);
             casesContainer.innerHTML = '';
             data.forEach(cols => {
+                console.log('cols:', cols);
                 if (!cols[0]) return; // 案件名が空ならスキップ
                 const [title, description, url1, url2] = cols;
                 let html = `<div class='case-item'>`;
