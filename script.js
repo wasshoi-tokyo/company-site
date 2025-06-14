@@ -222,12 +222,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 事例紹介データを取得して表示する関数
     async function fetchAndDisplayCases() {
         try {
-            const response = await fetch('https://docs.google.com/spreadsheets/d/1RtwQ7J1sLj4Ej29eV_I-IZEawKCW_j2oPlTEzvBYTH0/gviz/tq?tqx=out:csv');
+            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRj9p3C_hcnGXYHMd4AW0j9JUYzSZiucii3dBIFcRstu9l8QDzdBlv8niG4x2DA2IoNWEnPBcTzzkkd/pub?gid=0&single=true&output=csv');
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
             const rows = csvText.trim().split('\n');
-            const headers = rows[0].split(',').map(h => h.replace(/^"|"$/g, ''));
-            const data = rows.slice(1).map(row => row.split(',').map(cell => cell.replace(/^"|"$/g, '')));
+            const headers = rows[0].split(',').map(h => h.replace(/^\"|\"$/g, ''));
+            const data = rows.slice(1).map(row => row.split(',').map(cell => cell.replace(/^\"|\"$/g, '')));
             const casesContainer = document.querySelector('.cases-grid');
             casesContainer.innerHTML = '';
             data.forEach(cols => {
