@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchAndDisplayCases() {
         console.log('fetchAndDisplayCases called');
         try {
-            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQHke_ueGyoldYnZJVbtZ-s-O7rikTuBi6gBC9Oj_-f2cQi5mytV34B4Y4WtPcL-A-t-oW-7AHTTKO0/pub?output=csv');
+            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQHke_ueGyoldYnZJVbtZ-s-O7rikTuBi6gBC9Oj_-f2cQi5mytV34B4Y4WtPcL-A-t-oW-7AHTTKO0/pub?gid=0&output=csv');
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
             const rows = csvText.trim().split('\n');
