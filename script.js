@@ -218,4 +218,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ページ読み込み時にニュースを取得
     fetchAndDisplayNews();
+
+    // 事例紹介データを取得して表示する関数
+    async function fetchAndDisplayCases() {
+        try {
+            const response = await fetch('https://docs.google.com/spreadsheets/d/1RtwQ7J1sLj4Ej29eV_I-IZEawKCW_j2oPlTEzvBYTH0/gviz/tq?tqx=out:csv');
+            const csvText = await response.text();
+            console.log('取得した事例CSVデータ:', csvText);
+            const rows = csvText.trim().split('\n');
+            const headers = rows[0].split(',').map(h => h.replace(/^"|"$/g, ''));
+            const data = rows.slice(1).map(row => row.split(',').map(cell => cell.replace(/^"|"$/g, '')));
+            const casesContainer = document.querySelector('.cases-grid');
+            casesContainer.innerHTML = '';
+            data.forEach(cols => {
+                if (!cols[0]) return; // 案件名が空ならスキップ
+                const [title, description, url1, url2] = cols;
+                let html = `<div class='case-item'>`;
+                html += `<h3>${title}</h3>`;
+                if (url1) html += `<p><a href='${url1}' target='_blank'>${url1}</a></p>`;
+                if (url2) html += `<p><a href='${url2}' target='_blank'>${url2}</a></p>`;
+                if (description) html += `<p>${description}</p>`;
+                html += `</div>`;
+                casesContainer.innerHTML += html;
+            });
+        } catch (error) {
+            console.error('事例紹介データの取得に失敗しました:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayCases);
 }); 
