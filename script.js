@@ -225,17 +225,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQHke_ueGyoldYnZJVbtZ-s-O7rikTuBi6gBC9Oj_-f2cQi5mytV34B4Y4WtPcL-A-t-oW-7AHTTKO0/pub?gid=0&single=true&output=csv');
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
-            const rows = csvText.trim().split('\n');
-            const headers = rows[0].split(',').map(h => h.replace(/^"|"$/g, ''));
-            const data = rows.slice(1).map(row => row.split(',').map(cell => cell.replace(/^"|"$/g, '')));
-            console.log('パースした事例データ:', data);
+            const rows = csvText.trim().split('\n').slice(1); // ヘッダー行を除外
             const casesContainer = document.querySelector('.cases-grid');
-            console.log('casesContainer:', casesContainer);
             casesContainer.innerHTML = '';
-            data.forEach(cols => {
+            rows.forEach(row => {
+                const cols = row.split(',').map(cell => cell.replace(/^"|"$/g, ''));
                 console.log('cols:', cols);
-                if (!cols[0]) return; // 案件名が空ならスキップ
-                const [title, description, url1, url2] = cols;
+                const title = cols[0] || '';
+                const description = cols[1] || '';
+                const url1 = cols[2] || '';
+                const url2 = cols[3] || '';
                 let html = `<div class='case-item'>`;
                 html += `<h3>${title}</h3>`;
                 if (url1) html += `<p><a href='${url1}' target='_blank'>${url1}</a></p>`;
