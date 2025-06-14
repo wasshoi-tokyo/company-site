@@ -248,11 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `<h3>${title}</h3>`;
                 if (description) html += `<p>${description}</p>`;
                 if (url1) {
-                    const displayUrl = url1.length > 50 ? url1.substring(0, 47) + '...' : url1;
+                    const displayUrl = url1.length > 40 ? url1.substring(0, 37) + '...' : url1;
                     html += `<p><a href='${url1}' target='_blank' title='${url1}'>${displayUrl}</a></p>`;
                 }
                 if (url2) {
-                    const displayUrl = url2.length > 50 ? url2.substring(0, 47) + '...' : url2;
+                    const displayUrl = url2.length > 40 ? url2.substring(0, 37) + '...' : url2;
                     html += `<p><a href='${url2}' target='_blank' title='${url2}'>${displayUrl}</a></p>`;
                 }
                 html += `</div>`;
