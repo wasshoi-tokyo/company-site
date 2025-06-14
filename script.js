@@ -221,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 事例紹介データを取得して表示する関数
     async function fetchAndDisplayCases() {
+        console.log('fetchAndDisplayCases called');
         try {
             const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQHke_ueGyoldYnZJVbtZ-s-O7rikTuBi6gBC9Oj_-f2cQi5mytV34B4Y4WtPcL-A-t-oW-7AHTTKO0/pub?gid=0&single=true&output=csv');
             const csvText = await response.text();
