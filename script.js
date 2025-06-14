@@ -223,13 +223,19 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchAndDisplayCases() {
         console.log('fetchAndDisplayCases called');
         try {
+            console.log('Fetching cases data...');
             const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQHke_ueGyoldYnZJVbtZ-s-O7rikTuBi6gBC9Oj_-f2cQi5mytV34B4Y4WtPcL-A-t-oW-7AHTTKO0/pub?gid=0&output=csv');
+            console.log('Response status:', response.status);
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
             const rows = csvText.trim().split('\n');
             console.log('rows:', rows);
             const casesContainer = document.querySelector('.cases-grid');
             console.log('casesContainer:', casesContainer);
+            if (!casesContainer) {
+                console.error('cases-grid element not found');
+                return;
+            }
             casesContainer.innerHTML = '';
             rows.slice(1).forEach(row => {
                 const cols = row.split(',').map(cell => cell.replace(/^"|"$/g, ''));
@@ -251,5 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayCases);
+    // ページ読み込み時に事例紹介を取得
+    fetchAndDisplayCases();
 }); 
