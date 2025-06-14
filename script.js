@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const url2 = cols[3] || '';
                 let html = `<div class='case-item'>`;
                 html += `<h3>${title}</h3>`;
-                if (description) html += `<p>${description}</p>`;
+                if (description) html += `<p>${description.replace(/^・/, '')}</p>`;
                 if (url1) {
                     const displayUrl = url1.length > 40 ? url1.substring(0, 37) + '...' : url1;
                     html += `<p><a href='${url1}' target='_blank' title='${url1}'>${displayUrl}</a></p>`;
