@@ -225,10 +225,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQHke_ueGyoldYnZJVbtZ-s-O7rikTuBi6gBC9Oj_-f2cQi5mytV34B4Y4WtPcL-A-t-oW-7AHTTKO0/pub?gid=0&single=true&output=csv');
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
-            const rows = csvText.trim().split('\n').slice(1); // ヘッダー行を除外
+            const rows = csvText.trim().split('\n');
+            console.log('rows:', rows);
             const casesContainer = document.querySelector('.cases-grid');
+            console.log('casesContainer:', casesContainer);
             casesContainer.innerHTML = '';
-            rows.forEach(row => {
+            rows.slice(1).forEach(row => {
                 const cols = row.split(',').map(cell => cell.replace(/^"|"$/g, ''));
                 console.log('cols:', cols);
                 const title = cols[0] || '';
