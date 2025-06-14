@@ -226,12 +226,12 @@ nav ul li a:hover:after {
 }
 
 .about-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    display: block;
 }
 
 .about-item {
+    width: 100%;
+    margin-bottom: 2em;
     background-color: var(--light-gray);
     padding: 2rem;
     border-radius: 8px;
