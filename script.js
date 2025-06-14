@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const csvText = await response.text();
             console.log('取得した事例CSVデータ:', csvText);
             const rows = csvText.trim().split('\n');
-            console.log('rows:', rows);
+            console.log('全行数:', rows.length);
             const casesContainer = document.querySelector('.cases-grid');
             console.log('casesContainer:', casesContainer);
             if (!casesContainer) {
@@ -237,9 +237,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             casesContainer.innerHTML = '';
-            rows.slice(1).forEach(row => {
+            const dataRows = rows.slice(1); // ヘッダー行を除外
+            console.log('データ行数:', dataRows.length);
+            dataRows.forEach((row, index) => {
                 const cols = row.split(',').map(cell => cell.replace(/^"|"$/g, ''));
-                console.log('cols:', cols);
+                console.log(`行 ${index + 1} のデータ:`, cols);
                 const title = cols[0] || '';
                 const description = cols[1] || '';
                 const url1 = cols[2] || '';
